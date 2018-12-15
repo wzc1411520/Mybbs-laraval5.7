@@ -15,11 +15,10 @@ class VerificationCodesController extends Controller
         $phone = $request->phone;
 //        return $this->response->array(['test_message' => 'store verification code']);
         if(!app()->environment('production')){
-            $code = 123456;
+            $code = '123456';
         }else{
             //随机生成
             $code = str_pad(random_int(1, 9999), 4, 0, STR_PAD_LEFT);
-
             try {
                 $result = $easySms->send($phone, [
                     'template' => 'SMS_142090066',
