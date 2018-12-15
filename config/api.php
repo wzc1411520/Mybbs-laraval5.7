@@ -228,6 +228,7 @@ return [
         ],
 
     ],
+    'jwt' => 'Dingo\Api\Auth\Provider\JWT',
     /*
     * 接口频率限制
     */
