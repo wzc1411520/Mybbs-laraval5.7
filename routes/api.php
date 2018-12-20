@@ -19,10 +19,17 @@ use Illuminate\Http\Request;
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1',[
-        'namespace' => 'App\Http\Controllers\Api'
+        'namespace' => 'App\Http\Controllers\Api',
+        'middleware' => 'serializer:array'
     ],function ($api){
     $api->get('version', function() {
         return response('this is version v1');
+    });
+    //微信公众号网页授权,获取用户信息
+    $api->group(['middleware'=>['wechat.oauth:snsapi_userinfo']],function ($api){
+//   Route::group(['middleware'=>'transfer.easywechat.session'],function(){
+        $api->get('snsapi_userinfo','UsersController@snsapi_userinfo')->name('api.weChat.userInfo');
+//   });
     });
     $api->group([
         //调用频率限制
@@ -30,6 +37,32 @@ $api->version('v1',[
         'limit' => config('api.rate_limits.sign.limit'),
         'expires' => config('api.rate_limits.sign.expires'),
     ],function ($api){
+
+        //游客访问的接口
+        $api->get('categories', 'CategoriesController@index')
+            ->name('api.categories.index');
+        $api->get('topics', 'TopicsController@index')
+            ->name('api.topics.index');
+
+        // 需要 token 验证的接口
+        $api->group(['middleware' => 'api.auth'], function($api) {
+            // 当前登录用户信息
+            $api->get('user', 'UsersController@me')
+                ->name('api.user.show');
+            // 编辑登录用户信息
+            $api->patch('user', 'UsersController@update')
+                ->name('api.user.patch');
+            $api->put('user', 'UsersController@update')
+            ->name('api.user.update');
+            // 图片资源
+            $api->post('images', 'ImagesController@store')
+                ->name('api.images.store');
+
+            // 发布话题
+            $api->post('topics', 'TopicsController@store')
+                ->name('api.topics.store');
+        });
+
         //发送验证码
         $api->post('verificationCodes','VerificationCodesController@store')->name('api.verificationCodes.store');
         //用户注册
@@ -37,13 +70,32 @@ $api->version('v1',[
         // 图片验证码
         $api->post('captchas', 'CaptchasController@store')
             ->name('api.captchas.store');
+//*************************************微信公众号*************************************************
+        //登录
+        $api->get('wechat/authorizations', 'AuthorizationsController@weChatStore')
+            ->name('api.authorizations.weChatStore');
+        $api->get('wechat/snsapi_userinfo', 'UsersController@snsapi_userinfo')
+            ->name('api.user.snsapi_userinfo');
+
+
 //***********************************小程序************************************************************
         // 登录
         $api->post('authorizations', 'AuthorizationsController@store')
-            ->name('api.authorizations.store');
+            ->name('api.authorizations.store');// 登录
+
+        // 刷新token
+        $api->put('authorizations/current', 'AuthorizationsController@update')
+            ->name('api.authorizations.update');
+// 删除token
+        $api->delete('authorizations/current', 'AuthorizationsController@destroy')
+            ->name('api.authorizations.destroy');
         // 小程序登录
         $api->post('weapp/authorizations', 'AuthorizationsController@weappStore')
             ->name('api.weapp.authorizations.store');
+        // 小程序注册
+        $api->post('weapp/users', 'UsersController@weappStore')
+            ->name('api.weapp.users.store');
+
     });
 
 });

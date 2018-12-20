@@ -6,6 +6,7 @@ use App\Models\Link;
 use App\Observers\LinkObserver;
 use Illuminate\Support\ServiceProvider;
 use Encore\Admin\Config\Config;
+use Illuminate\Http\Resources\Json\Resource;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
 
         \Carbon\Carbon::setLocale('zh');
         Config::load();
+        Resource::withoutWrapping();
     }
 
     /**

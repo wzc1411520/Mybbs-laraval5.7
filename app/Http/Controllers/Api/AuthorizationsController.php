@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Api\WeappAuthorizationRequest;
+use App\Http\Requests\Api\AuthorizationRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,9 +11,25 @@ use Illuminate\Support\Facades\Auth;
 class AuthorizationsController extends Controller
 {
     //微信公众号登陆
-    public function store()
+    public function store(AuthorizationRequest $request)
     {
+        $username = $request->username;
 
+        filter_var($username, FILTER_VALIDATE_EMAIL) ?
+            $credentials['email'] = $username :
+            $credentials['phone'] = $username;
+
+        $credentials['password'] = $request->password;
+
+        if (!$token = \Auth::guard('api')->attempt($credentials)) {
+            return $this->response->errorUnauthorized('用户名或密码错误');
+        }
+
+        if (!$token = Auth::guard('api')->attempt($credentials)) {
+            return $this->response->errorUnauthorized('用户名或密码错误');
+        }
+
+        return $this->respondWithToken($token)->setStatusCode(201);
     }
     protected function respondWithToken($token)
     {
@@ -21,6 +38,26 @@ class AuthorizationsController extends Controller
             'token_type' => 'Bearer',
             'expires_in' => \Auth::guard('api')->factory()->getTTL() * 60
         ]);
+    }
+    public function update()
+    {
+        $token = Auth::guard('api')->refresh();
+        return $this->respondWithToken($token);
+    }
+
+    public function destroy()
+    {
+        Auth::guard('api')->logout();
+        return $this->response->noContent();
+    }
+
+    //微信公众号登录
+    public function weChatStore()
+    {
+        $weChat = \EasyWeChat::officialAccount();
+        $response = $weChat->oauth->scopes(['snsapi_userinfo'])
+            ->redirect();
+        return $response;
     }
     
     //微信小程序登陆

@@ -48,12 +48,12 @@ Route::resource('replies', 'RepliesController', ['only' => ['store', 'destroy']]
 
 Route::resource('notifications', 'NotificationsController', ['only' => ['index']]);
 
-Route::group(['middleware'=>['wechat.oauth:snsapi_userinfo']],function (){
-   Route::group(['middleware'=>'transfer.easywechat.session'],function(){
-       Route::get('snsapi_userinfo','HomeController@snsapi_userinfo')->name('home.index');
-   });
-});
-
-Route::group(['middleware'=>['wechat.oauth:snsapi_base']],function () {
-    Route::get('snsapi_base','HomeController@snsapi_base')->name('home.index2');
-});
+//Route::group(['middleware'=>['wechat.oauth:snsapi_userinfo']],function (){
+////   Route::group(['middleware'=>'transfer.easywechat.session'],function(){
+//       Route::get('snsapi_userinfo','HomeController@snsapi_userinfo')->name('home.index');
+////   });
+//});
+//
+//Route::group(['middleware'=>['wechat.oauth:snsapi_base']],function () {
+//    Route::get('snsapi_base','HomeController@snsapi_base')->name('home.index2');
+//});

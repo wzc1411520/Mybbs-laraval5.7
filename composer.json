@@ -30,6 +30,7 @@
         "laravel-admin-ext/scheduling": "^1.0",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
+        "liyu/dingo-serializer-switch": "^0.3.0",
         "mews/captcha": "~2.0",
         "mews/purifier": "~2.0",
         "overtrue/easy-sms": "^1.1",

@@ -8,8 +8,11 @@ class HomeController extends Controller
 {
     public function snsapi_userinfo()
     {
-        $wechat_user = session('wechat.oauth_user.default');
-        dd($wechat_user);
+        $weChat = \EasyWeChat::officialAccount();
+        $response = $weChat->oauth->user()->getOriginal();
+        return $response;
+//        $wechat_user = session('wechat.oauth_user.default');
+//        dd($wechat_user->getId());
     }
 
     public function snsapi_base()
