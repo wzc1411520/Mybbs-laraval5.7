@@ -49,4 +49,13 @@ class TopicsController extends Controller
         $topic->update($request->all());
         return new TopicResource($topic);
     }
+
+    //删除话题
+    public function destroy(TopicRequest $request,Topic $topic)
+    {
+        $this->authorize('destroy', $topic);
+
+        $topic->delete();
+        return $this->response->noContent();
+    }
 }
