@@ -10,6 +10,12 @@ use Illuminate\Http\Request;
 
 class TopicsController extends Controller
 {
+    //获取某个人的所有列表
+    public function userIndex(Request $request,User $user)
+    {
+        $topic = $user->topics()->recent()->paginate(20);
+        return TopicResource::collection($topic);
+    }
     //获取话题刘表
     public function index(Request $request,Topic $topic)
     {
