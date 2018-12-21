@@ -30,7 +30,7 @@ class TopicsController extends Controller
 
         $topics = $query->paginate(10);
 
-        return $this->response->collection($topics);
+        return TopicResource::collection($topics);
     }
 
     //发布话题
@@ -40,5 +40,13 @@ class TopicsController extends Controller
         $topic->user_id = $this->user()->id;
         $topic->save();
         return  new TopicResource($topic);
+    }
+
+    //修改话题
+    public function update(TopicRequest $request,Topic $topic)
+    {
+        $this->authorize('update',$topic);
+        $topic->update($request->all());
+        return new TopicResource($topic);
     }
 }

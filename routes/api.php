@@ -20,7 +20,7 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1',[
         'namespace' => 'App\Http\Controllers\Api',
-        'middleware' => 'serializer:array'
+        'middleware' =>['serializer:array','bindings']
     ],function ($api){
     $api->get('version', function() {
         return response('this is version v1');
@@ -61,6 +61,10 @@ $api->version('v1',[
             // 发布话题
             $api->post('topics', 'TopicsController@store')
                 ->name('api.topics.store');
+            //修改话题
+            $api->patch('topics/{topic}','TopicsController@update')
+                ->name('api.topics.update');
+
         });
 
         //发送验证码
