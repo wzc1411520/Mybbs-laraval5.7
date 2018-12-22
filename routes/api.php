@@ -49,6 +49,9 @@ $api->version('v1',[
         //获取话题详情
         $api->get('topics/{topic}', 'TopicsController@show')
             ->name('api.topics.show');
+        // 用户详情
+        $api->get('users/{user}', 'UsersController@show')
+            ->name('api.users.show');
 
         // 需要 token 验证的接口
         $api->group(['middleware' => 'api.auth'], function($api) {
