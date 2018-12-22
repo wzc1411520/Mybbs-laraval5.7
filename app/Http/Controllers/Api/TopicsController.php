@@ -34,7 +34,7 @@ class TopicsController extends Controller
                 break;
         }
 
-        $topics = $query->paginate(10);
+        $topics = $query->paginate(20);
 
         return TopicResource::collection($topics);
     }
@@ -63,5 +63,11 @@ class TopicsController extends Controller
 
         $topic->delete();
         return $this->response->noContent();
+    }
+
+    //获取详情
+    public function show(Topic $topic)
+    {
+        return new TopicResource($topic);
     }
 }
