@@ -18,8 +18,8 @@ function make_excerpt($value, $length = 200)
 function storage_url($avatar){
     if (preg_match('/^(http)|(HTTP)$/i',$avatar)){
         return $avatar;
-    }elseif(preg_match('/storage/',$avatar)){
-        return config('app.url').'/'.$avatar;
+    }elseif(preg_match('/^\/storage/',$avatar)){
+        return config('app.url').$avatar;
     }
     else{
         return config('app.url').'/storage/'.$avatar;

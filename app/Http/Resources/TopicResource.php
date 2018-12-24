@@ -27,6 +27,7 @@ class TopicResource extends JsonResource
             'slug' => $this->slug,
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
+            'topReplies' => ReplyResource::collection($this->whenLoaded('topReplies')),
         ];
     }
 }

@@ -57,10 +57,9 @@ class TopicsController extends Controller
     }
 
     //删除话题
-    public function destroy(TopicRequest $request,Topic $topic)
+    public function destroy(Topic $topic)
     {
         $this->authorize('destroy', $topic);
-
         $topic->delete();
         return $this->response->noContent();
     }
@@ -68,6 +67,6 @@ class TopicsController extends Controller
     //获取详情
     public function show(Topic $topic)
     {
-        return new TopicResource($topic);
+        return new TopicResource($topic->load('topReplies'));
     }
 }
