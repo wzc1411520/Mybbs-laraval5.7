@@ -7,6 +7,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Cache;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -63,6 +64,11 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Reply::class)->orderBy('id','desc');
     }
+
+//    public function roles()
+//    {
+//        return $this->hasMany(Role::class);
+//    }
 
     public function markAsRead()
     {
