@@ -22,7 +22,7 @@ class RepliesController extends Controller
     }
 
     //删除
-    public function delete(Reply $reply,Topic $topic)
+    public function destroy(Topic $topic,Reply $reply)
     {
         if ($reply->topic_id != $topic->id) {
             return $this->response->errorBadRequest();
