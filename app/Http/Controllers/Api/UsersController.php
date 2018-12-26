@@ -182,4 +182,11 @@ class UsersController extends Controller
     {
         return new UserResource($user);
     }
+
+    //获取活跃用户
+    public function activedIndex(User $user)
+    {
+        $cativiedUser = $user->getActiveUsers();
+        return UserResource::collection($cativiedUser);
+    }
 }
