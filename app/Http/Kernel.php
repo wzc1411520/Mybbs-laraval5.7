@@ -66,9 +66,7 @@ class Kernel extends HttpKernel
         'wechat.oauth' => \Overtrue\LaravelWeChat\Middleware\OAuthAuthenticate::class,
         'transfer.easywechat.session'=>TransferSession::class,
         // 接口语言设置
-        'change-locale' => \App\Http\Middleware\ChangeLocale::class,
-        // 访问节流，类似于 『1 分钟只能请求 10 次』的需求，一般在 API 中使用
-        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'change_locale' => \App\Http\Middleware\ChangeLocale::class,
     ];
 
     /**

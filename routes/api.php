@@ -20,7 +20,7 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1',[
         'namespace' => 'App\Http\Controllers\Api',
-        'middleware' =>['serializer:array','bindings','change-locale']
+        'middleware' =>['serializer:array','bindings','change_locale']
     ],function ($api){
     $api->get('version', function() {
         return response('this is version v1');
